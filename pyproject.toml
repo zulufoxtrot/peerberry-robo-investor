@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "peerberry-robo-investor"
+version = "0.1.0"
+description = ""
+authors = ["zulufoxtrot <youri.lcd@gmail.com>"]
+readme = "README.md"
+packages = [{include = "peerberry_robo_investor"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+peerberrypy = "^1.6.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+

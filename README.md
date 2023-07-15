@@ -1,2 +1,3 @@
 # peerberry-robo-investor
-Invests automaticall on the Peerberry crowdlending platform
+Invests automatically on the Peerberry crowdlending platform
+

@@ -34,7 +34,7 @@ if __name__ == "__main__":
     # take a 20% margin (some loans will become unavailable for purchase by the time we try to purchase them
     loans_needed = int((available_balance * 1.2) // AMOUNT_TO_BUY)
 
-    loans = api_client.get_loans(min_interest_rate=10,
+    loans = api_client.get_loans(min_interest_rate=9,
                                  max_remaining_term=60,
                                  group_guarantee=True,
                                  exclude_invested_loans=True,
@@ -44,6 +44,8 @@ if __name__ == "__main__":
 
     logging.info(f"Found {len(loans)} loans matching criteria (max requested: {loans_needed})")
 
+    sold_out_counter = 0
+
     for loan in loans:
         logging.info(f"Purchasing #" + str(loan["loanId"]))
         try:
@@ -51,14 +53,29 @@ if __name__ == "__main__":
         except TooManyRequestsException:
             logging.error("Too many API requests. Sleeping for 1 minute, then resuming purchases")
             time.sleep(60)
+            logging.info("Resuming...")
             continue
         except InsufficientFunds as e:
+            if str(e) == "The loan is sold out":
+                sold_out_counter += 1
+            if sold_out_counter >= 5:
+                logging.info("Too many sold out loans, refreshing list...")
+                loans = api_client.get_loans(min_interest_rate=9,
+                                             max_remaining_term=60,
+                                             group_guarantee=True,
+                                             exclude_invested_loans=True,
+                                             sort="interest_rate",
+                                             quantity=loans_needed,
+                                             raw=True)
+                sold_out_counter = 0
             # known cases:
             # - The remaining available loan amount after investment cannot be less than the minimum investment amount
             # - The loan is sold out
             logging.info("Failed buying, skipping")
             logging.info(f"Error message: {e}")
+            time.sleep(2)
             continue
+        sold_out_counter = 0
         time.sleep(2)
 
     api_client.logout()

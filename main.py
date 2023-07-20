@@ -56,6 +56,9 @@ if __name__ == "__main__":
             logging.info("Resuming...")
             continue
         except InsufficientFunds as e:
+            if str(e) == "Low investor balance":
+                logging.info("Out of funds. Ending purchases.")
+                break
             if str(e) == "The loan is sold out":
                 sold_out_counter += 1
             if sold_out_counter >= 5:
@@ -68,7 +71,7 @@ if __name__ == "__main__":
                                              quantity=loans_needed,
                                              raw=True)
                 sold_out_counter = 0
-            # known cases:
+            # other known cases:
             # - The remaining available loan amount after investment cannot be less than the minimum investment amount
             # - The loan is sold out
             logging.info("Failed buying, skipping")

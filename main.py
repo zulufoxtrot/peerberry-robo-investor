@@ -5,7 +5,7 @@ import time
 from logging.handlers import RotatingFileHandler
 
 from peerberrypy import API
-from peerberrypy.exceptions import InsufficientFunds, TooManyRequestsException
+from peerberrypy.exceptions import InsufficientFunds
 
 if __name__ == "__main__":
 
@@ -50,11 +50,13 @@ if __name__ == "__main__":
         logging.info(f"Purchasing #" + str(loan["loanId"]))
         try:
             api_client.purchase_loan(loan["loanId"], 10)
-        except TooManyRequestsException:
-            logging.error("Too many API requests. Sleeping for 1 minute, then resuming purchases")
-            time.sleep(60)
-            logging.info("Resuming...")
-            continue
+        # except TooManyRequestsException:
+        # uncomment this once exception handling has been improved in the library
+        # no real need anyway, spacing purchases by 2 seconds does not trigger rate limiting.
+        #     logging.error("Too many API requests. Sleeping for 1 minute, then resuming purchases")
+        #     time.sleep(60)
+        #     logging.info("Resuming...")
+        #     continue
         except InsufficientFunds as e:
             if str(e) == "Low investor balance":
                 logging.info("Out of funds. Ending purchases.")

@@ -1,7 +1,7 @@
 # Peerberry Robo-investor
-Invests automatically on the Peerberry crowdlending platform
+Invests automatically on the Peerberry crowdlending platform.
 
-Esketit already has a robo-investor built-in, but for some reason it does not invest fast enough, causing cash drag.
+Peerberry already has a robo-investor built-in, but for some reason it does not invest fast enough, causing cash drag.
 
 # Install
 

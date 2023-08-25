@@ -17,7 +17,16 @@ Setup project with poetry:
 
 # Run
 
+To run in a shell:
+
+`poetry shell`
+then
+`python main.py`
+
+
+To run automatically:
+
 Set up a cron job for this command:
 
-`PEERBERRY_EMAIL=your_email PEERBERRY_PASSWORD=your_password python /path/to/project/main.py`
+`poetry run bash -c "PEERBERRY_EMAIL=your_email PEERBERRY_PASSWORD=your_password python /path/to/project/main.py"`
 

@@ -10,7 +10,7 @@ from peerberrypy.exceptions import InsufficientFunds
 if __name__ == "__main__":
 
     # amount in EUR to allocate to each loan
-    AMOUNT_TO_BUY = 10
+    AMOUNT_TO_BUY = 49
 
     logging.basicConfig(
         handlers=[RotatingFileHandler('log.txt', maxBytes=100000, backupCount=10),

@@ -31,8 +31,8 @@ if __name__ == "__main__":
         logging.info("Available balance below 10€ or below the purchase amount. Aborting.")
         sys.exit()
 
-    # take a 20% margin (some loans will become unavailable for purchase by the time we try to purchase them)
-    loans_needed = int((available_balance * 1.2) // AMOUNT_TO_BUY)
+    # take a 50% margin (some loans will become unavailable for purchase by the time we try to purchase them)
+    loans_needed = int((available_balance * 1.5) // AMOUNT_TO_BUY)
 
     loans = api_client.get_loans(min_interest_rate=9,
                                  max_remaining_term=60,
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     for loan in loans:
         logging.info(f"Purchasing #" + str(loan["loanId"]))
         try:
-            api_client.purchase_loan(loan["loanId"], AMOUNT_TO_BUY)
+            api_client.purchase_loan(loan["loanId"], min(loan["availableAmount"], AMOUNT_TO_BUY))
         # except TooManyRequestsException:
         # uncomment this once exception handling has been improved in the library
         # no real need anyway, spacing purchases by 2 seconds does not trigger rate limiting.
